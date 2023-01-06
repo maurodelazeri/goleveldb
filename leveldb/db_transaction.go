@@ -174,6 +174,7 @@ func (tr *Transaction) Write(b *Batch, wo *opt.WriteOptions) error {
 	if tr.closed {
 		return errTransactionDone
 	}
+
 	return b.replayInternal(func(i int, kt keyType, k, v []byte) error {
 		return tr.put(kt, k, v)
 	})

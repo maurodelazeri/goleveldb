@@ -7,7 +7,6 @@
 package leveldb
 
 import (
-	"fmt"
 	"sync/atomic"
 	"time"
 
@@ -274,8 +273,8 @@ func (db *DB) writeLocked(batch, ourBatch *Batch, merge, sync bool) error {
 // It is safe to modify the contents of the arguments after Write returns but
 // not before. Write will not modify content of the batch.
 func (db *DB) Write(batch *Batch, wo *opt.WriteOptions) error {
-	s := fmt.Sprintf("leveldb WriteEEEEEEEEEEEEEEEE len %v dump %v data %v", batch.Dump(), batch.Len(), string(batch.data))
-	fmt.Println(s)
+	// s := fmt.Sprintf("leveldb WriteEEEEEEEEEEEEEEEE len %v dump %v data %v", batch.Dump(), batch.Len(), string(batch.data))
+	// fmt.Println(s)
 
 	if err := db.ok(); err != nil || batch == nil || batch.Len() == 0 {
 		return err
@@ -399,8 +398,8 @@ func (db *DB) Put(key, value []byte, wo *opt.WriteOptions) error {
 // It is safe to modify the contents of the arguments after Delete returns but
 // not before.
 func (db *DB) Delete(key []byte, wo *opt.WriteOptions) error {
-	s := fmt.Sprintf("leveldb DELETE %v", string(key))
-	fmt.Println(s)
+	// s := fmt.Sprintf("leveldb DELETE %v", string(key))
+	// fmt.Println(s)
 
 	return db.putRec(keyTypeDel, key, nil, wo)
 }
