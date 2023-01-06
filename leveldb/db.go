@@ -859,6 +859,8 @@ func (db *DB) has(auxm *memdb.DB, auxt tFiles, key []byte, seq uint64, ro *opt.R
 // of the returned slice.
 // It is safe to modify the contents of the argument after Get returns.
 func (db *DB) Get(key []byte, ro *opt.ReadOptions) (value []byte, err error) {
+	fmt.Println("GET BABY key", string(key))
+
 	err = db.ok()
 	if err != nil {
 		return
@@ -873,6 +875,8 @@ func (db *DB) Get(key []byte, ro *opt.ReadOptions) (value []byte, err error) {
 //
 // It is safe to modify the contents of the argument after Has returns.
 func (db *DB) Has(key []byte, ro *opt.ReadOptions) (ret bool, err error) {
+	fmt.Println("HAS BABY key", string(key))
+
 	err = db.ok()
 	if err != nil {
 		return
@@ -931,6 +935,7 @@ func (db *DB) GetSnapshot() (*Snapshot, error) {
 // GetProperty returns value of the given property name.
 //
 // Property names:
+//
 //	leveldb.num-files-at-level{n}
 //		Returns the number of files at level 'n'.
 //	leveldb.stats
