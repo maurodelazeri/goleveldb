@@ -153,7 +153,8 @@ func (db *DB) unlockWrite(overflow bool, merged int, err error) {
 
 // ourBatch is batch that we can modify.
 func (db *DB) writeLocked(batch, ourBatch *Batch, merge, sync bool) error {
-	fmt.Println("leveldb writeLocked", "batch len", batch.Len(), "merge", merge, "sync", sync)
+	s := fmt.Sprintf("leveldb writeLocked batch len %v merge %v sync %v.\n", batch.Len(), merge, sync)
+	fmt.Println(s)
 
 	// Try to flush memdb. This method would also trying to throttle writes
 	// if it is too fast and compaction cannot catch-up.
@@ -238,12 +239,16 @@ func (db *DB) writeLocked(batch, ourBatch *Batch, merge, sync bool) error {
 
 	// Put batches.
 	for _, batch := range batches {
+		s := fmt.Sprintf("leveldb memory batch %v %v", seq, string(batch.data))
+		fmt.Println(s)
+	}
+
+	// Put batches.
+	for _, batch := range batches {
 		if err := batch.putMem(seq, mdb.DB); err != nil {
 			panic(err)
 		}
 		seq += uint64(batch.Len())
-
-		fmt.Println("leveldb memory batch", seq, string(batch.data))
 	}
 
 	// Incr seq number.
@@ -269,7 +274,8 @@ func (db *DB) writeLocked(batch, ourBatch *Batch, merge, sync bool) error {
 // It is safe to modify the contents of the arguments after Write returns but
 // not before. Write will not modify content of the batch.
 func (db *DB) Write(batch *Batch, wo *opt.WriteOptions) error {
-	fmt.Println("leveldb WriteEEEEEEEEEEEEEEEE")
+	s := fmt.Sprintf("leveldb WriteEEEEEEEEEEEEEEEE len %v %v", batch.Len(), string(batch.data))
+	fmt.Println(s)
 
 	if err := db.ok(); err != nil || batch == nil || batch.Len() == 0 {
 		return err
@@ -391,7 +397,9 @@ func (db *DB) Put(key, value []byte, wo *opt.WriteOptions) error {
 // It is safe to modify the contents of the arguments after Delete returns but
 // not before.
 func (db *DB) Delete(key []byte, wo *opt.WriteOptions) error {
-	fmt.Println("leveldb Delete", string(key))
+	s := fmt.Sprintf("leveldb DELETE %v", string(key))
+	fmt.Println(s)
+
 	return db.putRec(keyTypeDel, key, nil, wo)
 }
 
