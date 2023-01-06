@@ -7,6 +7,7 @@
 package leveldb
 
 import (
+	"fmt"
 	"sync/atomic"
 	"time"
 
@@ -152,6 +153,8 @@ func (db *DB) unlockWrite(overflow bool, merged int, err error) {
 
 // ourBatch is batch that we can modify.
 func (db *DB) writeLocked(batch, ourBatch *Batch, merge, sync bool) error {
+	fmt.Println("leveldb writeLocked")
+
 	// Try to flush memdb. This method would also trying to throttle writes
 	// if it is too fast and compaction cannot catch-up.
 	mdb, mdbFree, err := db.flush(batch.internalLen)
@@ -264,6 +267,8 @@ func (db *DB) writeLocked(batch, ourBatch *Batch, merge, sync bool) error {
 // It is safe to modify the contents of the arguments after Write returns but
 // not before. Write will not modify content of the batch.
 func (db *DB) Write(batch *Batch, wo *opt.WriteOptions) error {
+	fmt.Println("leveldb Write")
+
 	if err := db.ok(); err != nil || batch == nil || batch.Len() == 0 {
 		return err
 	}
@@ -321,6 +326,8 @@ func (db *DB) Write(batch *Batch, wo *opt.WriteOptions) error {
 }
 
 func (db *DB) putRec(kt keyType, key, value []byte, wo *opt.WriteOptions) error {
+	fmt.Println("leveldb putRec", kt.String(), string(key), string(value))
+
 	if err := db.ok(); err != nil {
 		return err
 	}
@@ -372,6 +379,7 @@ func (db *DB) putRec(kt keyType, key, value []byte, wo *opt.WriteOptions) error 
 // It is safe to modify the contents of the arguments after Put returns but not
 // before.
 func (db *DB) Put(key, value []byte, wo *opt.WriteOptions) error {
+	fmt.Println("leveldb PUT", string(key), string(value))
 	return db.putRec(keyTypeVal, key, value, wo)
 }
 
@@ -381,6 +389,7 @@ func (db *DB) Put(key, value []byte, wo *opt.WriteOptions) error {
 // It is safe to modify the contents of the arguments after Delete returns but
 // not before.
 func (db *DB) Delete(key []byte, wo *opt.WriteOptions) error {
+	fmt.Println("leveldb Delete", string(key))
 	return db.putRec(keyTypeDel, key, nil, wo)
 }
 
