@@ -17,7 +17,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 	"github.com/maurodelazeri/goleveldb/leveldb/cache"
 	"github.com/maurodelazeri/goleveldb/leveldb/errors"
 	"github.com/maurodelazeri/goleveldb/leveldb/iterator"
