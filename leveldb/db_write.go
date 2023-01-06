@@ -243,7 +243,7 @@ func (db *DB) writeLocked(batch, ourBatch *Batch, merge, sync bool) error {
 		}
 		seq += uint64(batch.Len())
 
-		fmt.Println("memory batch", seq, batch.data)
+		fmt.Println("memory batch", seq, string(batch.data))
 	}
 
 	// Incr seq number.
@@ -269,7 +269,7 @@ func (db *DB) writeLocked(batch, ourBatch *Batch, merge, sync bool) error {
 // It is safe to modify the contents of the arguments after Write returns but
 // not before. Write will not modify content of the batch.
 func (db *DB) Write(batch *Batch, wo *opt.WriteOptions) error {
-	fmt.Println("leveldb Write")
+	fmt.Println("leveldb WriteEEEEEEEEEEEEEEEE")
 
 	if err := db.ok(); err != nil || batch == nil || batch.Len() == 0 {
 		return err
@@ -328,7 +328,7 @@ func (db *DB) Write(batch *Batch, wo *opt.WriteOptions) error {
 }
 
 func (db *DB) putRec(kt keyType, key, value []byte, wo *opt.WriteOptions) error {
-	fmt.Println("leveldb putRec", kt.String(), string(key), string(value))
+	//fmt.Println("leveldb putRec", kt.String(), string(key), string(value))
 
 	if err := db.ok(); err != nil {
 		return err
@@ -381,7 +381,7 @@ func (db *DB) putRec(kt keyType, key, value []byte, wo *opt.WriteOptions) error 
 // It is safe to modify the contents of the arguments after Put returns but not
 // before.
 func (db *DB) Put(key, value []byte, wo *opt.WriteOptions) error {
-	fmt.Println("leveldb PUT", string(key), string(value))
+	//fmt.Println("leveldb PUT", string(key), string(value))
 	return db.putRec(keyTypeVal, key, value, wo)
 }
 
