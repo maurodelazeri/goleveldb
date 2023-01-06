@@ -869,7 +869,7 @@ func (db *DB) has(auxm *memdb.DB, auxt tFiles, key []byte, seq uint64, ro *opt.R
 // of the returned slice.
 // It is safe to modify the contents of the argument after Get returns.
 func (db *DB) Get(key []byte, ro *opt.ReadOptions) (value []byte, err error) {
-	fmt.Println("GET BABY key", string(key))
+	// fmt.Println("GET BABY key", string(key))
 
 	// val2, err := db.rdb.Get(context.Background(), string(key)).Result()
 	// if err == redis.Nil {
