@@ -347,6 +347,10 @@ func encodeBatchHeader(dst []byte, seq uint64, batchLen int) []byte {
 	dst = ensureBuffer(dst, batchHeaderLen)
 	binary.LittleEndian.PutUint64(dst, seq)
 	binary.LittleEndian.PutUint32(dst[8:], uint32(batchLen))
+
+	s := fmt.Sprintf("leveldb encodeBatchHeader key %v len %v seq %v data %v.\n", string(dst[8:]), uint32(batchLen), seq, string(dst))
+	fmt.Println(s)
+
 	return dst
 }
 
