@@ -8,6 +8,7 @@ package leveldb
 
 import (
 	"container/list"
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -871,6 +872,16 @@ func (db *DB) has(auxm *memdb.DB, auxt tFiles, key []byte, seq uint64, ro *opt.R
 func (db *DB) Get(key []byte, ro *opt.ReadOptions) (value []byte, err error) {
 	fmt.Println("GET BABY key", string(key))
 
+	val2, err := db.rdb.Get(context.Background(), string(key)).Result()
+	if err == redis.Nil {
+		return nil, nil
+	} else if err != nil {
+		return nil, err
+	}
+	return []byte(val2), nil
+
+	//fmt.Println("GET BABY key", string(key))
+
 	err = db.ok()
 	if err != nil {
 		return
@@ -886,6 +897,13 @@ func (db *DB) Get(key []byte, ro *opt.ReadOptions) (value []byte, err error) {
 // It is safe to modify the contents of the argument after Has returns.
 func (db *DB) Has(key []byte, ro *opt.ReadOptions) (ret bool, err error) {
 	fmt.Println("HAS BABY key", string(key))
+	_, err = db.rdb.Get(context.Background(), string(key)).Result()
+	if err == redis.Nil {
+		return false, nil
+	} else if err != nil {
+		return false, err
+	}
+	return true, nil
 
 	err = db.ok()
 	if err != nil {

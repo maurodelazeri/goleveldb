@@ -7,6 +7,7 @@
 package leveldb
 
 import (
+	"context"
 	"fmt"
 	"sync/atomic"
 	"time"
@@ -335,9 +336,11 @@ func (db *DB) Write(batch *Batch, wo *opt.WriteOptions) error {
 
 func (db *DB) putRec(kt keyType, key, value []byte, wo *opt.WriteOptions) error {
 	//fmt.Println("leveldb putRec", kt.String(), string(key), string(value))
+	db.rdb.Set(context.Background(), string(key), value, 0)
 
 	s := fmt.Sprintf("leveldb putRec keyType %v key %v value %v.\n", kt.String(), string(key), string(value))
 	fmt.Println(s)
+	return nil
 
 	if err := db.ok(); err != nil {
 		return err
