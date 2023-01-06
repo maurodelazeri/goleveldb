@@ -243,7 +243,7 @@ func (db *DB) writeLocked(batch, ourBatch *Batch, merge, sync bool) error {
 		}
 		seq += uint64(batch.Len())
 
-		fmt.Println("memory batch", seq, string(batch.data))
+		fmt.Println("leveldb memory batch", seq, string(batch.data))
 	}
 
 	// Incr seq number.
