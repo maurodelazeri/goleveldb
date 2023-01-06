@@ -376,6 +376,10 @@ func writeBatchesWithHeader(wr io.Writer, batches []*Batch, seq uint64) error {
 		return err
 	}
 	for _, batch := range batches {
+
+		s := fmt.Sprintf("writeBatchesWithHeader data %v dumbp %v\n", string(batch.data), string(batch.Dump()))
+		fmt.Println(s)
+
 		if _, err := wr.Write(batch.data); err != nil {
 			return err
 		}
