@@ -17,6 +17,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/go-redis/redis/v8"
 	"github.com/maurodelazeri/goleveldb/leveldb/cache"
 	"github.com/maurodelazeri/goleveldb/leveldb/errors"
 	"github.com/maurodelazeri/goleveldb/leveldb/iterator"
@@ -89,6 +90,8 @@ type DB struct {
 	closeC chan struct{}
 	closed uint32
 	closer io.Closer
+
+	rdb *redis.Client
 }
 
 func openDB(s *session) (*DB, error) {
@@ -158,6 +161,13 @@ func openDB(s *session) (*DB, error) {
 		go db.mCompaction()
 		// go db.jWriter()
 	}
+
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+	db.rdb = rdb
 
 	s.logf("db@open done T·%v", time.Since(start))
 

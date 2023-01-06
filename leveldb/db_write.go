@@ -153,8 +153,8 @@ func (db *DB) unlockWrite(overflow bool, merged int, err error) {
 
 // ourBatch is batch that we can modify.
 func (db *DB) writeLocked(batch, ourBatch *Batch, merge, sync bool) error {
-	s := fmt.Sprintf("leveldb writeLocked batch len %v merge %v sync %v.\n", batch.Len(), merge, sync)
-	fmt.Println(s)
+	//s := fmt.Sprintf("leveldb writeLocked batch len %v merge %v sync %v.\n", batch.Len(), merge, sync)
+	//fmt.Println(s)
 
 	// Try to flush memdb. This method would also trying to throttle writes
 	// if it is too fast and compaction cannot catch-up.
@@ -238,10 +238,10 @@ func (db *DB) writeLocked(batch, ourBatch *Batch, merge, sync bool) error {
 	}
 
 	// Put batches.
-	for _, batch := range batches {
-		s := fmt.Sprintf("leveldb memory batch %v %v", seq, string(batch.data))
-		fmt.Println(s)
-	}
+	// for index, batch := range batches {
+	// 	s := fmt.Sprintf("leveldb memory batch keyType %v keyPos %v keyLen %v valueLen %v valuePos %v", batch.index[index].keyType.String(), batch.index[index].keyPos, batch.index[index].keyLen, batch.index[index].valueLen, batch.index[index].valuePos, batch.index[index].v())
+	// 	fmt.Println(s)
+	// }
 
 	// Put batches.
 	for _, batch := range batches {
@@ -274,7 +274,7 @@ func (db *DB) writeLocked(batch, ourBatch *Batch, merge, sync bool) error {
 // It is safe to modify the contents of the arguments after Write returns but
 // not before. Write will not modify content of the batch.
 func (db *DB) Write(batch *Batch, wo *opt.WriteOptions) error {
-	s := fmt.Sprintf("leveldb WriteEEEEEEEEEEEEEEEE len %v %v", batch.Len(), string(batch.data))
+	s := fmt.Sprintf("leveldb WriteEEEEEEEEEEEEEEEE len %v dump %v data %v", batch.Dump(), batch.Len(), string(batch.data))
 	fmt.Println(s)
 
 	if err := db.ok(); err != nil || batch == nil || batch.Len() == 0 {
@@ -335,6 +335,9 @@ func (db *DB) Write(batch *Batch, wo *opt.WriteOptions) error {
 
 func (db *DB) putRec(kt keyType, key, value []byte, wo *opt.WriteOptions) error {
 	//fmt.Println("leveldb putRec", kt.String(), string(key), string(value))
+
+	s := fmt.Sprintf("leveldb putRec keyType %v key %v value %v.\n", kt.String(), string(key), string(value))
+	fmt.Println(s)
 
 	if err := db.ok(); err != nil {
 		return err
