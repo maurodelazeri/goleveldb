@@ -8,6 +8,7 @@ package leveldb
 
 import (
 	"errors"
+	"fmt"
 	"sync"
 	"time"
 
@@ -176,6 +177,7 @@ func (tr *Transaction) Write(b *Batch, wo *opt.WriteOptions) error {
 	}
 
 	return b.replayInternal(func(i int, kt keyType, k, v []byte) error {
+		fmt.Println("Transaction PUT key", string(k), "val", string(v), "type", kt.String())
 		return tr.put(kt, k, v)
 	})
 }
