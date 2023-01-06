@@ -220,7 +220,6 @@ func (b *Batch) decode(data []byte, expectedLen int) error {
 func (b *Batch) putMem(seq uint64, mdb *memdb.DB) error {
 	var ik []byte
 	for i, index := range b.index {
-		fmt.Println("leveldb putMem", seq, index.keyType.String(), string(index.v(b.data)))
 		ik = makeInternalKey(ik, index.k(b.data), seq+uint64(i), index.keyType)
 		if err := mdb.Put(ik, index.v(b.data)); err != nil {
 			return err
